@@ -1,51 +1,45 @@
 import json
- 
+import streamlit as st
+
+st.title("Vacation Finder")
+st.write("Find your perfect vacation!")
+st.write("Pick your preferences:")
+
 with open('vacationdata.json', 'r') as file:
     vacation_data = json.load(file)
-
+    
 def ask_preference():
-    print("Let's find your perfect vacation destination!")
-    print("Please pick your preferences:)")
+    st.write("Let's find your perfect vacation destination!")
+    st.write("Please pick your preferences:)")
 
-    print("\nWhat type of vacation are you looking for?")
-    print("1. City")
-    print("2. Beach")
-    print("3. Mountain")
-    type_choice = input("Enter 1, 2, or 3: ")
+    type_choice = st.radio(
+        "What type of vacation are you looking for?",
+        ("City", "Beach", "Mountain")
+    )
+    
+    climate_choice = st.radio(
+        "What climate are you looking for?",
+        ("Warm", "Cold")
+    )
+    
+    distance_choice = st.radio(
+        "Do you prefer a near or far destination (starting from Berlin)?",
+        ("Far", "Near")
+    )
 
-    print("\nWhat climate are you looking for?")
-    print("1. Warm")
-    print("2.Cold")
-    climate_choice = input("Enter 1 or 2: ")
-
-    print("\nDo you prefer a near or far destination(starting from Berlin)?")
-    print("1. Far")
-    print("2. Near")
-    distance_choice = input("Enter 1 or 2: ")
-    
-    print("\nThank you:)")
-    
-    type_map = {"1": "City", "2": "Beach", "3": "Mountain"}
-    climate_map = {"1": "Warm", "2": "Cold"}
-    distance_map = {"1": "Far", "2": "Near"}
-    
-    chosen_type = type_map.get(type_choice)
-    chosen_climate = climate_map.get(climate_choice)
-    chosen_distance = distance_map.get(distance_choice)
-    
-    matching_places = []
-    for place in vacation_data["Location"]:
-        if (place["Type"] == chosen_type and
-         place["Temperature"] == chosen_climate and
-         place["Distance"] == chosen_distance):
-            matching_places.append(place["Name"])
+    if st.button("Find Destinations"):
+        matching_places = []
+        for place in vacation_data["Location"]:
+            if (place["Type"] == type_choice and
+                place["Temperature"] == climate_choice and
+                place["Distance"] == distance_choice):
+                matching_places.append(place)
             
-    if matching_places:
-        print("\nHere are your Destnations, have fun!:")
-        for name in matching_places:
-            print(f"-{name}")
-    else:
-        print("\nSorry, no matching destinations found:(")
-        
-        
+        if matching_places:
+            st.write("Here are your Destinations, have fun!:")
+            for place in matching_places:
+                st.write(f"- {place['Name']} ({place['Type']}, {place['Temperature']} climate, {place['Distance']} from Berlin)")
+        else:
+            st.write("Sorry, no matching destinations found:(")
+                
 ask_preference()
