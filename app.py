@@ -43,3 +43,5 @@ def ask_preference():
             st.write("Sorry, no matching destinations found:(")
                 
 ask_preference()
+
+#this is a comment to test the git commit 
