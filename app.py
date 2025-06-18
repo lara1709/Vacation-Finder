@@ -38,10 +38,9 @@ def ask_preference():
         if matching_places:
             st.write("Here are your Destinations, have fun!:")
             for place in matching_places:
-                st.write(f"- {place['Name']} ({place['Type']}, {place['Temperature']} climate, {place['Distance']} from Berlin)")
+                country = place.get("Country", "Unknown Country")
+                st.write(f"**{place['Name']}, {country}** - a {place['Temperature'].lower()}  {place['Type'].lower()} destination ({place['Distance'].lower()} from Berlin).")
         else:
             st.write("Sorry, no matching destinations found:(")
                 
 ask_preference()
-
-#this is a comment to test the git commit 
