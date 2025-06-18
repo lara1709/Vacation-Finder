@@ -2,12 +2,27 @@ import json
 import streamlit as st
 
 st.title("Vacation Finder")
-st.write("Find your perfect vacation!")
-st.write("Pick your preferences:")
 
 with open('vacationdata.json', 'r') as file:
     vacation_data = json.load(file)
     
+def filter_destinations(data, types, climates, distances):
+    matching_places =[]
+    if "Location" in data and isinstance(data["Location"], list):
+        for place in data["Location"]:
+            place_type = place.get("Type")
+            place_temp = place.get("Temperature")
+            place_dist = place.get("Distance")
+            
+            type_match = True if not types else (place_type in types)
+            climate_match = True if not climates else (place_temp in climates)
+            distance_match = True if not distances else (place_dist in distances)
+            
+            if type_match and climate_match and distance_match:
+                matching_places.append(place)
+    
+    return matching_places
+
 def ask_preference():
     st.write("Let's find your perfect vacation destination!")
     st.write("Please pick your preferences:)")
@@ -28,12 +43,12 @@ def ask_preference():
     )
 
     if st.button("Find Destinations"):
-        matching_places = []
-        for place in vacation_data["Location"]:
-            if (place["Type"] in type_choices and
-                place["Temperature"] in climate_choices and
-                place["Distance"] in distance_choices):
-                matching_places.append(place)
+        matching_places = filter_destinations(
+            vacation_data,
+            type_choices,
+            climate_choices,
+            distance_choices
+        )    
             
         if matching_places:
             st.write("Here are your Destinations, have fun!:")
