@@ -35,7 +35,7 @@ These are the features my project includes:
 
 ## Structure
 
-![ULM](ULM.png)
+![UML](uml.png)
 
 ## Example
 
@@ -52,7 +52,7 @@ Here are some screenshots of my app!
 ![Screenshot 3](screenshot3.png)
 
 ### Example of no results found
-![Screenshot 4](Screenshot4.png)
+![Screenshot 4](screenshot4.png)
 
 ---
 
